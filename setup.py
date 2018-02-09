@@ -36,7 +36,7 @@ import os
 from datetime import datetime
 
 
-__author__ = "Kiran Vishal Thanjavur Bhaaskar & Naveen Purushotham"
+__author__ = "KV Thanjavur Bhaaskar & Naveen Purushotham"
 __copyright__ = "Copyright 2018, Xilinx"
 __email__ = "kvt@xilinx.com & npurusho@xilinx.com"
 
@@ -122,7 +122,6 @@ def fill_notebooks():
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
     update_boot()
     install_packages()
-    update_interfaces()
     fill_notebooks()
 
 
@@ -150,4 +149,3 @@ setup(name='spynstarter',
           '': extra_files,
       }
       )
-
