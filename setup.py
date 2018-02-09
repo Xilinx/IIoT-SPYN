@@ -52,6 +52,13 @@ def install_packages():
                            'pytest-runner', 'paho-mqtt', 'netifaces'])
     print("Installing packages done ...")
 
+# Uninstall packages
+def uninstall_packages():
+    subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install','uninstall'])
+    subprocess.check_call(['pip3.6', 'install',
+                           'scapy-python3'])
+    print("Uninstalling packages done ...")
+    
 # Notebook delivery
 def fill_notebooks():
     src_nb = GIT_DIR + '/notebooks'
@@ -98,6 +105,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'install':
     
 elif len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
     print("uninstalling")
+    uninstall_packages()
     remove_notebooks()
    # remove_overlays()
    # remove_lib()
