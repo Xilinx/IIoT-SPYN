@@ -106,7 +106,26 @@ def fill_notebooks():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling notebooks done ...")
+    
+# Overlays delivery
+def fill_overlays():
+    src_nb = GIT_DIR + '/spyn-starter/overlays'
+    dst_nb_dir = '/home/xilinx/pynq/overlays/spyn_eddp'
+    if os.path.exists(dst_nb_dir):
+        shutil.rmtree(dst_nb_dir)
+    shutil.copytree(src_nb, dst_nb_dir)
 
+    print("Filling overlays done ...")
+    
+# Overlays delivery
+def fill_lib():
+    src_nb = GIT_DIR + '/spyn-starter/lib'
+    dst_nb_dir = '/home/xilinx/pynq/lib/spyn_starter'
+    if os.path.exists(dst_nb_dir):
+        shutil.rmtree(dst_nb_dir)
+    shutil.copytree(src_nb, dst_nb_dir)
+
+    print("Filling overlays done ...")
 
 # Run makefiles
 #def run_make(src_path, output_lib):
@@ -121,8 +140,8 @@ def fill_notebooks():
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
     install_packages()
     fill_notebooks()
-
-
+    fill_overlays()
+    fill_lib()
 
 def package_files(directory):
     paths = []
