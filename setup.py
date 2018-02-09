@@ -95,7 +95,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'install':
     fill_overlays()
     fill_lib()
     
-else if len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
+elif len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
     print("uninstalling")
     remove_notebooks()
    # remove_overlays()
