@@ -69,8 +69,7 @@ GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # Install packages
 def install_packages():
-    subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install',
-                           'tcpdump', 'iptables', 'ebtables', 'bridge-utils'])
+    subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install'])
     subprocess.check_call(['pip3.6', 'install',
                            'scapy-python3', 'wurlitzer',
                            'pytest-runner', 'paho-mqtt', 'netifaces'])
