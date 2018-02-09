@@ -65,6 +65,7 @@ def fill_notebooks():
 # Notebook removal
 def remove_notebooks():
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter'
+    src_nb = GIT_DIR + '/notebooks'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     print("Removing notebooks done ...")
