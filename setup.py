@@ -120,7 +120,6 @@ def fill_notebooks():
 
 
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
-    update_boot()
     install_packages()
     fill_notebooks()
 
