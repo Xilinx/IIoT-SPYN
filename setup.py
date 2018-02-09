@@ -44,29 +44,6 @@ __email__ = "kvt@xilinx.com & npurusho@xilinx.com"
 GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-# Update boot partition
-#def update_boot():
-#    boot_mount = '/mnt/boot'
-#    if not os.path.exists('/mnt/boot'):
-#        subprocess.check_call(['mkdir', boot_mount])
-#    subprocess.check_call(['mount', '/dev/mmcblk0p1', boot_mount])
-
-#    backup_folder = boot_mount + '/BOOT_PARTITION_{}'.format(
-#        datetime.now().strftime("%Y_%m_%d_%H_%M_%S"))
-#    subprocess.check_call(['mkdir', backup_folder])
-#    boot_file = ['BOOT.bin', 'devicetree.dtb', 'uEnv.txt', 'uImage']
-#    for file in boot_file:
-#        if os.path.isfile(boot_mount + '/' + file):
-#            shutil.copy2(boot_mount + '/' + file,
-#                         backup_folder + '/')
-#   for file in boot_file:
-#       shutil.copy2(GIT_DIR + '/boot_files/' + file,
-#                    boot_mount + '/')
-
-#    subprocess.check_call(['umount', '/dev/mmcblk0p1'])
-#    print("Update boot files done ...")
-
-
 # Install packages
 def install_packages():
     subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install'])
@@ -74,28 +51,6 @@ def install_packages():
                            'scapy-python3', 'wurlitzer',
                            'pytest-runner', 'paho-mqtt', 'netifaces'])
     print("Installing packages done ...")
-
-
-# Update interfaces - Leaving it here for now, might need removal
-def update_interfaces():
-    eth0_file = '/etc/network/interfaces.d/eth0'
-    backup_file = '/etc/network/interfaces.d/.{}'.format(
-        datetime.now().strftime("%Y_%m_%d_%H_%M_%S"))
-    shutil.copy2(eth0_file, backup_file)
-    shutil.copy2(GIT_DIR + '/interfaces.d/eth0', eth0_file)
-    print("Update interface files done ...")
-
-
-# Build submodules - KV edit
-#def build_submodules():
-#    subprocess.check_call(['git', 'submodule', 'init'])
-#   subprocess.check_call(['git', 'submodule', 'update'])
-#   shutil.copytree(GIT_DIR + '/mqtt-sn-tools',
-#                   GIT_DIR + '/pynq_networking/mqtt-sn-tools')
-#   shutil.copytree(GIT_DIR + '/rsmb',
-#                   GIT_DIR + '/pynq_networking/rsmb')
-#   print("Update submodules done ...")
-
 
 # Notebook delivery
 def fill_notebooks():
@@ -106,6 +61,12 @@ def fill_notebooks():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling notebooks done ...")
+    
+# Notebook removal
+def fill_notebooks():
+    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter'
+    shutil.rmtree(dst_nb_dir)
+    print("Removing notebooks done ...")
     
 # Overlays delivery
 def fill_overlays():
@@ -127,21 +88,16 @@ def fill_lib():
 
     print("Filling overlays done ...")
 
-# Run makefiles
-#def run_make(src_path, output_lib):
-#    status = subprocess.check_call(["make", "-C", GIT_DIR + '/' + src_path])
-#    if status is not 0:
-#        print("Error while running make for", output_lib, "Exiting..")
-#        sys.exit(1)
-
-#    print("Running make for " + output_lib + " done ...")
-
-
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
     install_packages()
     fill_notebooks()
     fill_overlays()
     fill_lib()
+    
+else if len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
+    remove_notebooks()
+   # remove_overlays()
+   # remove_lib()
 
 def package_files(directory):
     paths = []
