@@ -109,7 +109,10 @@ elif len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
     remove_notebooks()
    # remove_overlays()
    # remove_lib()
-
+    
+else:
+    print("invalid option")
+    
 def package_files(directory):
     paths = []
     for (path, directories, file_names) in os.walk(directory):
