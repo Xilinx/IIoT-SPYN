@@ -63,7 +63,7 @@ def fill_notebooks():
     print("Filling notebooks done ...")
     
 # Notebook removal
-def fill_notebooks():
+def remove_notebooks():
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter'
     shutil.rmtree(dst_nb_dir)
     print("Removing notebooks done ...")
