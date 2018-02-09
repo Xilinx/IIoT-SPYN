@@ -65,7 +65,8 @@ def fill_notebooks():
 # Notebook removal
 def remove_notebooks():
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter'
-    shutil.rmtree(dst_nb_dir)
+    if os.path.exists(dst_nb_dir):
+        shutil.rmtree(dst_nb_dir)
     print("Removing notebooks done ...")
     
 # Overlays delivery
@@ -95,6 +96,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'install':
     fill_lib()
     
 else if len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
+    print("uninstalling")
     remove_notebooks()
    # remove_overlays()
    # remove_lib()
