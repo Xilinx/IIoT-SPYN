@@ -125,7 +125,7 @@ extra_files = package_files('spyn-starter')
 
 
 setup(name='spynstarter',
-      version='2.0',
+      version='1.0',
       description='Motor Control using PYNQ package',
       author='Xilinx ISM + PYNQ',
       author_email='kvt@xilinx.com & npurusho@xilinx.com',
