@@ -51,13 +51,6 @@ def install_packages():
                            'scapy-python3', 'wurlitzer',
                            'pytest-runner', 'paho-mqtt', 'netifaces'])
     print("Installing packages done ...")
-
-# Uninstall packages
-def uninstall_packages():
-    subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install','uninstall'])
-    subprocess.check_call(['pip3.6', 'install',
-                           'scapy-python3'])
-    print("Uninstalling packages done ...")
     
 # Notebook delivery
 def fill_notebooks():
@@ -68,14 +61,6 @@ def fill_notebooks():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling notebooks done ...")
-    
-# Notebook removal
-def remove_notebooks():
-    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter'
-    src_nb = GIT_DIR + '/notebooks'
-    if os.path.exists(dst_nb_dir):
-        shutil.rmtree(dst_nb_dir)
-    print("Removing notebooks done ...")
     
 # Overlays delivery
 def fill_overlays():
@@ -102,16 +87,6 @@ if len(sys.argv) > 1 and sys.argv[1] == 'install':
     fill_notebooks()
     fill_overlays()
     fill_lib()
-    
-elif len(sys.argv) > 1 and sys.argv[1] == 'uninstall':
-    print("uninstalling")
-    uninstall_packages()
-    remove_notebooks()
-   # remove_overlays()
-   # remove_lib()
-    
-else:
-    print("invalid option")
     
 def package_files(directory):
     paths = []
