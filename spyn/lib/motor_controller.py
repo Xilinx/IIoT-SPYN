@@ -28,7 +28,7 @@
 #   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from pynq import MMIO
-from constants import *
+from .constants import *
 
 __author__ = "Naveen Purushotham, KV Thanjavur Bhaaskar"
 __copyright__ = "Copyright 2018, Xilinx"
