@@ -48,8 +48,8 @@ GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 def install_packages():
     subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install'])
     subprocess.check_call(['pip3.6', 'install',
-                           'scapy-python3', 'wurlitzer',
-                           'pytest-runner', 'paho-mqtt', 'netifaces'])
+                           'dash', 'dash-renderer',
+                           'dash-html-components', 'dash-core-components', 'plotly'])
     print("Installing packages done ...")
     
 # Notebook delivery
