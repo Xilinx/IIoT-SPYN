@@ -64,8 +64,8 @@ def fill_notebooks():
  
 # Images delivery
 def fill_images():
-    src_nb = GIT_DIR + '/images/'
-    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter/'
+    src_nb = GIT_DIR + '/images'
+    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter/images'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
