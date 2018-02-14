@@ -7,8 +7,7 @@ import os
 from pynq import Overlay
 from pynq import MMIO
 import numpy as np
-from .motor_controller import *
-from .constants import *
+from .spyn import *
 from pynq import Xlnk
 from flask import send_from_directory
 
