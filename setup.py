@@ -82,20 +82,6 @@ def fill_overlays():
 
     print("Filling overlays done ...")
     
-# Build Package Data files - overlays
-def fill_overlay_dir():
-    for ol, nb_dir in overlay_notebook_folders:
-        pynq_notebook_files.extend([(os.path.join(notebooks_dir, root.replace(nb_dir, '{}/'.format(ol))),
-                                     [os.path.join(root, f) for f in files]) for root, dirs, files in os.walk(nb_dir)])
-
-    # copy notebooks into final destination
-    for dst, files in pynq_notebook_files:
-        if not os.path.exists(dst):
-            os.makedirs(dst)
-        for file in files:
-            shutil.copy(file, dst)
-            dst_file = os.path.join(dst, os.path.basename(file))
-            os.chmod(dst_file, os.stat(dst_file).st_mode | stat.S_IWOTH)    
     
 # Overlays delivery
 def fill_lib():
@@ -112,7 +98,6 @@ if len(sys.argv) > 1 and sys.argv[1] == 'install':
     fill_notebooks()
     fill_images()
     fill_overlays()
-    fill_overlay_dir()
     fill_lib()
     
 def package_files(directory):
@@ -126,7 +111,7 @@ def package_files(directory):
 extra_files = package_files('spyn-starter')
 
 
-setup(name='spynstarter',
+setup(name='spyn',
       version='1.0',
       description='Motor Control using PYNQ package',
       author='Xilinx ISM + PYNQ',
