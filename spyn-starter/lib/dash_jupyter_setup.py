@@ -1,6 +1,5 @@
 import dash
 from IPython import display
-import pandas as pd
 
 
 def show_app(app,  # type: dash.Dash
@@ -52,17 +51,3 @@ def show_app(app,  # type: dash.Dash
                           port=port,
                           host="0.0.0.0",
                           **dash_flask_kwargs)
-
-from pynq import Overlay
-from pynq import MMIO
-import numpy as np
-from motor_controller import *
-from constants import *
-from pynq import Xlnk
-import pandas as pd
-import time
-
-overlay = Overlay("eddp.bit")
-overlay.download()
-
-motor = Motor_Controller()

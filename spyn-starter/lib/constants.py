@@ -109,4 +109,4 @@ ADDRESS_RANGE = 65536  # 64K
 # Capture modes for stream capture
 CAPTURE_IA_IB_ANGLE_RPM = 0x0
 CAPTURE_ID_IQ = 0x2
-CAPTURE_VD_VQ = 0x3
+CAPTURE_VD_VQ = 0x6

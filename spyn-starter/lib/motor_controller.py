@@ -80,7 +80,7 @@ class Motor_Controller(object):  # TODO comments
         elif mode == 'id_iq':
             self.mmio_control.write(reg.offset, CAPTURE_ID_IQ)
         elif mode == 'vd_vq':
-            self.mmio_control.write(reg.offset, CAPTURE_VD_VQ)   
+            self.mmio_control.write(reg.offset, CAPTURE_VD_VQ)
         else:
             self.mmio_control.write(reg.offset, CAPTURE_IA_IB_ANGLE_RPM)
 
