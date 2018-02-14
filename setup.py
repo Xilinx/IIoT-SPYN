@@ -108,7 +108,7 @@ def package_files(directory):
     return paths
 
 
-extra_files = package_files('spyn-starter')
+extra_files = package_files('spyn')
 
 
 setup(name='spyn',
