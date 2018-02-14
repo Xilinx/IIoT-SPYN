@@ -55,7 +55,7 @@ def install_packages():
 # Notebook delivery
 def fill_notebooks():
     src_nb = GIT_DIR + '/notebooks'
-    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter'
+    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
@@ -65,7 +65,7 @@ def fill_notebooks():
 # Images delivery
 def fill_images():
     src_nb = GIT_DIR + '/images'
-    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter/images'
+    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn/images'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
@@ -74,18 +74,33 @@ def fill_images():
     
 # Overlays delivery
 def fill_overlays():
-    src_nb = GIT_DIR + '/spyn-starter/overlays'
-    dst_nb_dir = '/home/xilinx/pynq/overlays/spyn_eddp'
+    src_nb = GIT_DIR + '/spyn/overlays'
+    dst_nb_dir = '/home/xilinx/pynq/overlays/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling overlays done ...")
     
+# Build Package Data files - overlays
+def fill_overlay_dir():
+    for ol, nb_dir in overlay_notebook_folders:
+        pynq_notebook_files.extend([(os.path.join(notebooks_dir, root.replace(nb_dir, '{}/'.format(ol))),
+                                     [os.path.join(root, f) for f in files]) for root, dirs, files in os.walk(nb_dir)])
+
+    # copy notebooks into final destination
+    for dst, files in pynq_notebook_files:
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+        for file in files:
+            shutil.copy(file, dst)
+            dst_file = os.path.join(dst, os.path.basename(file))
+            os.chmod(dst_file, os.stat(dst_file).st_mode | stat.S_IWOTH)    
+    
 # Overlays delivery
 def fill_lib():
-    src_nb = GIT_DIR + '/spyn-starter/lib'
-    dst_nb_dir = '/home/xilinx/pynq/lib/spyn_starter'
+    src_nb = GIT_DIR + '/spyn/lib'
+    dst_nb_dir = '/home/xilinx/pynq/lib/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
@@ -97,6 +112,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'install':
     fill_notebooks()
     fill_images()
     fill_overlays()
+    fill_overlay_dir()
     fill_lib()
     
 def package_files(directory):
