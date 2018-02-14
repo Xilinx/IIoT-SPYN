@@ -61,6 +61,16 @@ def fill_notebooks():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling notebooks done ...")
+ 
+# Images delivery
+def fill_images():
+    src_nb = GIT_DIR + '/images/'
+    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn-starter/'
+    if os.path.exists(dst_nb_dir):
+        shutil.rmtree(dst_nb_dir)
+    shutil.copytree(src_nb, dst_nb_dir)
+
+    print("Filling notebooks done ...")
     
 # Overlays delivery
 def fill_overlays():
@@ -85,6 +95,7 @@ def fill_lib():
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
     install_packages()
     fill_notebooks()
+    fill_images()
     fill_overlays()
     fill_lib()
     
