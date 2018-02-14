@@ -7,12 +7,12 @@ import os
 from pynq import Overlay
 from pynq import MMIO
 import numpy as np
-from motor_controller import *
-from constants import *
+from .motor_controller import *
+from .constants import *
 from pynq import Xlnk
 from flask import send_from_directory
 
-overlay = Overlay("eddp.bit")
+overlay = Overlay("/opt/python3.6/lib/python3.6/site-packages/spyn/overlays/eddp.bit")
 overlay.download()
 
 motor = Motor_Controller()
