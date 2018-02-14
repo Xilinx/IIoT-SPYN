@@ -35,11 +35,9 @@ import sys
 import os
 from datetime import datetime
 
-
-__author__ = "KV Thanjavur Bhaaskar & Naveen Purushotham"
+__author__ = "KV Thanjavur Bhaaskar, Naveen Purushotham"
 __copyright__ = "Copyright 2018, Xilinx"
-__email__ = "kvt@xilinx.com & npurusho@xilinx.com"
-
+__email__ = "kvt@xilinx.com, npurusho@xilinx.com"
 
 GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -49,9 +47,11 @@ def install_packages():
     subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install'])
     subprocess.check_call(['pip3.6', 'install',
                            'dash', 'dash-renderer',
-                           'dash-html-components', 'dash-core-components', 'plotly'])
+                           'dash-html-components', 'dash-core-components',
+                           'plotly'])
     print("Installing packages done ...")
-    
+
+
 # Notebook delivery
 def fill_notebooks():
     src_nb = GIT_DIR + '/notebooks'
@@ -61,7 +61,8 @@ def fill_notebooks():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling notebooks done ...")
- 
+
+
 # Images delivery
 def fill_images():
     src_nb = GIT_DIR + '/images'
@@ -71,7 +72,8 @@ def fill_images():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling notebooks done ...")
-    
+
+
 # Overlays delivery
 def fill_overlays():
     src_nb = GIT_DIR + '/spyn/overlays'
@@ -81,8 +83,8 @@ def fill_overlays():
     shutil.copytree(src_nb, dst_nb_dir)
 
     print("Filling overlays done ...")
-    
-    
+
+
 # Overlays delivery
 def fill_lib():
     src_nb = GIT_DIR + '/spyn/lib'
@@ -93,13 +95,15 @@ def fill_lib():
 
     print("Filling overlays done ...")
 
+
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
     install_packages()
     fill_notebooks()
     fill_images()
     fill_overlays()
     fill_lib()
-    
+
+
 def package_files(directory):
     paths = []
     for (path, directories, file_names) in os.walk(directory):
@@ -109,7 +113,6 @@ def package_files(directory):
 
 
 extra_files = package_files('spyn')
-
 
 setup(name='spyn',
       version='1.0',

@@ -44,7 +44,8 @@ from spyn import *
 from pynq import Xlnk
 from flask import send_from_directory
 
-overlay = Overlay("/opt/python3.6/lib/python3.6/site-packages/spyn/overlays/eddp.bit")
+overlay = Overlay(
+    "/opt/python3.6/lib/python3.6/site-packages/spyn/overlays/eddp.bit")
 overlay.download()
 
 motor = Motor_Controller()
@@ -137,8 +138,8 @@ app.layout = html.Div(
                         {'label': 'RPM', 'value': 'RPM'}
                     ],
                     value='Ia Current',
-                    labelStyle={'display': 'inline-block'})],                
-                    style={'padding': '0px 0px 20px 0px', }),
+                    labelStyle={'display': 'inline-block'})],
+                style={'padding': '0px 0px 20px 0px', }),
             html.Div(id='graphs')],
             style={'padding': '0px 0px 0px 0px',
                    'text-align': 'left',
