@@ -32,5 +32,5 @@ __author__ = "KV Thanjavur Bhaaskar & Naveen Purushotham"
 __copyright__ = "Copyright 2018, Xilinx"
 __email__ = "kvt@xilinx.com & npurusho@xilinx.com"
 
-from motor_controller import *
-from constants import *
+from .motor_controller import *
+from .constants import *
