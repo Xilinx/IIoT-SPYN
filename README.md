@@ -11,6 +11,7 @@ notebooks : The folder contains jupyter notebooks which are used to control the 
 PYNQ Project : (https://github.com/Xilinx/PYNQ/blob/master/LICENSE)
 
 PYNQ Project License : BSD 3-Clause License
+
 Copyright (c) 2016, Xilinx
 All rights reserved.
 
