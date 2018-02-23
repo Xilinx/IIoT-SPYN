@@ -12,10 +12,10 @@ IIoT-SPYN is intended to work with the EDDP kit. Here is the link to purchase th
 
 ## Quick Start
 
-On the latest PYNQ image, use the following command in a terminal to install SPYN-Starter
+On the latest PYNQ image, use the following command in a terminal to install IIoT-SPYN
 
 ```bash
-$ sudo pip3.6 install --upgrade git+https://github.com/Xilinx/SPYN-starter.git
+$ sudo pip3.6 install --upgrade git+https://github.com/Xilinx/IIoT-SPYN.git
 $ sudo reboot now
 ```
 
