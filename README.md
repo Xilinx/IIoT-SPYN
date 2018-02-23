@@ -4,7 +4,7 @@
 
 [**PYNQ**](https://github.com/Xilinx/PYNQ): Python on Zynq is an open-source project from Xilinx that makes it easy to design embedded systems with Zynq All Programmable Systems on Chips (APSoCs). Using the Python language and libraries, designers can exploit the benefits of programmable logic and microprocessors in Zynq to build more capable and exciting embedded systems. 
 
-**IIoT-SPYN**: Industrial IoT SPYN is an open source project that leverages  IIoT-EDDP and PYNQ. Using IIoT-SPYN users can control, monitor, capture data, visualize and analyze Industrial grade motors. 
+[**IIoT-SPYN**](https://github.com/Xilinx/IIoT-SPYN): Industrial IoT SPYN is an open source project that leverages  IIoT-EDDP and PYNQ. Using IIoT-SPYN users can control, monitor, capture data, visualize and analyze Industrial grade motors. 
 
 IIoT-SPYN is intended to work with the EDDP kit. Here is the link to purchase the kit: [EDDP Kit](https://shop.trenz-electronic.de/en/TEC0053-04-K1-EDDP-Motor-Control-Kit-with-Motor-Power-Supplies?c=476)
 
