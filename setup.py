@@ -41,6 +41,27 @@ __email__ = "kvt@xilinx.com, npurusho@xilinx.com"
 
 GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 
+from setuptools import setup, Extension, find_packages
+import shutil
+import subprocess
+import sys
+import os
+import site
+import warnings
+from datetime import datetime
+
+# Board specific package delivery setup
+def exclude_from_files(exclude, path):
+    return [file for file in os.listdir(path)
+            if os.path.isfile(os.path.join(path, file))
+            and file != exclude]
+
+
+def exclude_from_dirs(exclude, path):
+    return [folder for folder in os.listdir(path)
+            if os.path.isdir(os.path.join(path, folder))
+            and folder != exclude]
+
 
 # Install packages
 def install_packages():
@@ -51,10 +72,19 @@ def install_packages():
                            'plotly'])
     print("Installing packages done ...")
 
+	
+if 'BOARD' not in os.environ:
+    print("Please set the BOARD environment variable "
+          "to get any BOARD specific overlays (e.g. Pynq-Z1).")
+    board = None
+    board_folder = None
+else:
+    board = os.environ['BOARD']
+    board_folder = 'boards/{}/'.format(board)
 
 # Notebook delivery
 def fill_notebooks():
-    src_nb = GIT_DIR + '/notebooks'
+    src_nb = GIT_DIR + board_folder + 'notebooks'
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
@@ -65,7 +95,7 @@ def fill_notebooks():
 
 # Images delivery
 def fill_images():
-    src_nb = GIT_DIR + '/images'
+    src_nb = GIT_DIR + board_folder + '/images'
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn/images'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
@@ -76,8 +106,8 @@ def fill_images():
 
 # Overlays delivery
 def fill_overlays():
-    src_nb = GIT_DIR + '/spyn/overlays'
-    dst_nb_dir = '/home/xilinx/pynq/overlays/spyn'
+    src_nb = GIT_DIR + board_folder + '/overlays'
+    dst_nb_dir = '/home/xilinx/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
@@ -87,8 +117,8 @@ def fill_overlays():
 
 # Overlays delivery
 def fill_lib():
-    src_nb = GIT_DIR + '/spyn/lib'
-    dst_nb_dir = '/home/xilinx/pynq/lib/spyn'
+    src_nb = GIT_DIR + board_folder + '/lib'
+    dst_nb_dir = '/home/xilinx/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     shutil.copytree(src_nb, dst_nb_dir)
@@ -97,11 +127,11 @@ def fill_lib():
 
 
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
-    install_packages()
-    fill_notebooks()
-    fill_images()
-    fill_overlays()
-    fill_lib()
+	install_packages()
+	fill_notebooks()
+	fill_images()
+	fill_overlays()
+	fill_lib()
 
 
 def package_files(directory):
@@ -126,3 +156,7 @@ setup(name='spyn',
           '': extra_files,
       }
       )
+	  
+if board:
+    print('Restarting PL server')
+    subprocess.run(['systemctl', 'restart', 'pl_server'])
