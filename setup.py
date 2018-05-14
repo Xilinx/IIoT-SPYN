@@ -81,7 +81,7 @@ else:
 
 # Notebook delivery
 def fill_notebooks():
-    src_nb = os.path.join(GIT_DIR, board_folder, 'notebooks')
+    src_nb = os.path.join(GIT_DIR, 'notebooks')
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
