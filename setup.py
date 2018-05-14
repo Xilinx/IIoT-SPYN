@@ -30,61 +30,58 @@
 
 from setuptools import setup, find_packages
 import shutil
-import subprocess
 import sys
 import os
-from datetime import datetime
+import site
+
 
 __author__ = "KV Thanjavur Bhaaskar, Naveen Purushotham"
 __copyright__ = "Copyright 2018, Xilinx"
 __email__ = "kvt@xilinx.com, npurusho@xilinx.com"
 
+
 GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-from setuptools import setup, Extension, find_packages
-import shutil
-import subprocess
-import sys
-import os
-import site
-import warnings
-from datetime import datetime
-dst_base_dir ='/opt/python3.6/lib/python3.6/site-packages/spyn'
+
 # Board specific package delivery setup
 def exclude_from_files(exclude, path):
     return [file for file in os.listdir(path)
             if os.path.isfile(os.path.join(path, file))
-            and file != exclude]
+            and file not in exclude]
 
 
 def exclude_from_dirs(exclude, path):
     return [folder for folder in os.listdir(path)
             if os.path.isdir(os.path.join(path, folder))
-            and folder != exclude]
+            and folder not in exclude]
 
 
-# Install packages
-def install_packages():
-    subprocess.check_call(['apt-get', '--yes', '--force-yes', 'install'])
-    subprocess.check_call(['pip3.6', 'install',
-                           'dash', 'dash-renderer',
-                           'dash-html-components', 'dash-core-components',
-                           'plotly'])
-    print("Installing packages done ...")
+def collect_data_files():
+    return [(os.path.join(
+        '{}/spyn/overlays'.format(os.path.dirname(site.__file__) +
+                                  "/site-packages"), ol),
+             [os.path.join(board_folder, ol, f)
+              for f in exclude_from_files(
+                 ['makefile'], os.path.join(board_folder, ol))])
+            for ol in exclude_from_dirs(['notebooks', 'vivado'],
+                                        board_folder)]
 
-	
+
 if 'BOARD' not in os.environ:
     print("Please set the BOARD environment variable "
           "to get any BOARD specific overlays (e.g. Pynq-Z1).")
     board = None
     board_folder = None
+    data_files = None
 else:
     board = os.environ['BOARD']
     board_folder = 'boards/{}'.format(board)
+    data_files = collect_data_files()
+
 
 # Notebook delivery
 def fill_notebooks():
-    src_nb = os.path.join(GIT_DIR,board_folder,'notebooks')
+    src_nb = os.path.join(GIT_DIR, board_folder, 'notebooks')
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
@@ -93,68 +90,20 @@ def fill_notebooks():
     print("Filling notebooks done ...")
 
 
-# Images delivery
-def fill_images():
-    src_nb = os.path.join(GIT_DIR, board_folder, 'images')
-    dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn/images'
-    if os.path.exists(dst_nb_dir):
-        shutil.rmtree(dst_nb_dir)
-    shutil.copytree(src_nb, dst_nb_dir)
-
-    print("Filling notebooks done ...")
-
-
-# Overlays delivery
-def fill_overlays():
-    src_nb = os.path.join(GIT_DIR, board_folder,'overlays')
-    dst_nb_dir = os.path.join(dst_base_dir, 'overlays')
-    if os.path.exists(dst_nb_dir):
-        shutil.rmtree(dst_nb_dir)
-    shutil.copytree(src_nb, dst_nb_dir)
-
-    print("Filling overlays done ...")
-
-
-# Overlays delivery
-def fill_lib():
-    src_nb = os.path.join(GIT_DIR, board_folder,'lib')
-    dst_nb_dir = os.path.join(dst_base_dir, 'lib')
-    if os.path.exists(dst_nb_dir):
-        shutil.rmtree(dst_nb_dir)
-    shutil.copytree(src_nb, dst_nb_dir)
-
-    print("Filling overlays done ...")
-
-
 if len(sys.argv) > 1 and sys.argv[1] == 'install':
-	install_packages()
-	fill_notebooks()
-	fill_images()
-	fill_overlays()
-	fill_lib()
+    fill_notebooks()
 
-
-def package_files(directory):
-    paths = []
-    for (path, directories, file_names) in os.walk(directory):
-        for file_name in file_names:
-            paths.append(os.path.join('..', path, file_name))
-    return paths
-
-
-extra_files = package_files('spyn')
 
 setup(name='spyn',
       version='1.0',
       description='Motor Control using PYNQ package',
       author='Xilinx ISM + PYNQ',
       author_email='kvt@xilinx.com & npurusho@xilinx.com',
-      url='https://github.com/Xilinx/SPYN-Starter',
+      url='https://github.com/Xilinx/IIoT-SPYN',
       packages=find_packages(),
-      download_url='https://github.com/Xilinx/SPYN-Starter',
+      download_url='https://github.com/Xilinx/IIoT-SPYN',
       package_data={
-          '': extra_files,
-      }
+          '': ['tests/*', 'js/*', '*.bin', '*.so', '*.pdm'],
+      },
+      data_files=data_files
       )
-	  
-
