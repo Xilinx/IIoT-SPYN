@@ -81,7 +81,7 @@ else:
 
 # Notebook delivery
 def fill_notebooks():
-    src_nb = os.path.join(GIT_DIR, board_folder, 'notebooks')
+    src_nb = os.path.join(GIT_DIR, 'notebooks')
     dst_nb_dir = '/home/xilinx/jupyter_notebooks/spyn'
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
@@ -98,12 +98,12 @@ setup(name='spyn',
       version='1.0',
       description='Motor Control using PYNQ package',
       author='Xilinx ISM + PYNQ',
-      author_email='kvt@xilinx.com & npurusho@xilinx.com',
+      author_email='kvt@xilinx.com',
       url='https://github.com/Xilinx/IIoT-SPYN',
       packages=find_packages(),
       download_url='https://github.com/Xilinx/IIoT-SPYN',
       package_data={
-          '': ['tests/*', 'js/*', '*.bin', '*.so', '*.pdm'],
+          '': ['*.bin', '*.so'],
       },
       data_files=data_files
       )
