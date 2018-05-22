@@ -33,4 +33,3 @@ __copyright__ = "Copyright 2018, Xilinx"
 __email__ = "kvt@xilinx.com, npurusho@xilinx.com"
 
 from .lib import *
-from .overlays import SpynOverlay
