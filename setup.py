@@ -59,7 +59,7 @@ def exclude_from_dirs(exclude, path):
 def collect_data_files():
     return [(os.path.join(
         '{}/spyn/overlays'.format(os.path.dirname(site.__file__) +
-                                  "/site-packages"), ol),
+                                  "/dist-packages"), ol),
              [os.path.join(board_folder, ol, f)
               for f in exclude_from_files(
                  ['makefile'], os.path.join(board_folder, ol))])
