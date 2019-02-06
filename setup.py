@@ -47,25 +47,24 @@ GIT_DIR = os.path.dirname(os.path.realpath(__file__))
 def exclude_from_files(exclude, path):
     return [file for file in os.listdir(path)
             if os.path.isfile(os.path.join(path, file))
-            and file not in exclude]
+            and file != exclude]
 
+def find_overlays(path):
+    return [f for f in os.listdir(path)
+            if os.path.isdir(os.path.join(path, f))
+            and len(glob.glob(os.path.join(path, f, "*.bit"))) > 0]
 
-def exclude_from_dirs(exclude, path):
-    return [folder for folder in os.listdir(path)
-            if os.path.isdir(os.path.join(path, folder))
-            and folder not in exclude]
-
-
-def collect_data_files():
-    return [(os.path.join(
-        '{}/spyn/overlays'.format(os.path.dirname(site.__file__) +
-                                  "/dist-packages"), ol),
-             [os.path.join(board_folder, ol, f)
-              for f in exclude_from_files(
-                 ['makefile'], os.path.join(board_folder, ol))])
-            for ol in exclude_from_dirs(['notebooks', 'vivado'],
-                                        board_folder)]
-
+def collect_pynq_overlays():
+    overlay_files = []
+    overlay_dirs = find_overlays(board_folder)
+    for ol in overlay_dirs:
+        copy_tree(os.path.join(board_folder, ol),
+                        os.path.join("spyn/overlays", ol))
+        newdir = os.path.join("spyn/overlays", ol)
+        files = exclude_from_files('makefile', newdir)
+        overlay_files.extend(
+                [os.path.join("..", newdir, f) for f in files])
+    return overlay_files
 
 if 'BOARD' not in os.environ:
     print("Please set the BOARD environment variable "
@@ -76,7 +75,7 @@ if 'BOARD' not in os.environ:
 else:
     board = os.environ['BOARD']
     board_folder = 'boards/{}'.format(board)
-    data_files = collect_data_files()
+    data_files = collect_pynq_overlays()
 
 
 # Notebook delivery
