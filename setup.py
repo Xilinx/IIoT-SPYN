@@ -32,6 +32,10 @@ from distutils.dir_util import copy_tree
 import os
 import shutil
 
+__author__ = "KV Thanjavur Bhaaskar, Naveen Purushotham"
+__copyright__ = "Copyright 2019, Xilinx"
+__email__ = "kvt@xilinx.com, npurusho@xilinx.com"
+
 # global variables
 board = os.environ['BOARD']
 repo_board_folder = f'boards/{board}/'
@@ -47,14 +51,6 @@ def check_env():
         raise ValueError("Directory {} does not exist.".format(board_notebooks_dir))
 
 
-# copy overlays to python package
-def copy_overlays():
-    src_ol_dir = os.path.join(repo_board_folder, '')
-    dst_ol_dir = os.path.join('spyn', 'bitstream')
-    copy_tree(src_ol_dir, dst_ol_dir)
-    hw_data_files.extend([os.path.join("..", dst_ol_dir, f) for f in os.listdir(dst_ol_dir)])
-
-
 # copy notebooks to jupyter home
 def copy_notebooks():
     src_nb_dir = os.path.join(f'', 'notebooks')
@@ -66,17 +62,15 @@ def copy_notebooks():
 
 check_env()
 copy_notebooks()
-copy_overlays()
-
 
 setup(
     name="spyn",
-    version='1.0',
+    version='1.1',
     install_requires=['pynq>=2.3'],
     url='https://github.com/npurusho/IIoT-SPYN.git',
     license='BSD 3-Clause License',
-    author="Naveen Purushotham",
-    author_email="npurusho@xilinx.com",
+    author='Xilinx ISM + PYNQ',
+    author_email='kvt@xilinx.com',
     packages=find_packages(),
     package_data={
         '': hw_data_files,
