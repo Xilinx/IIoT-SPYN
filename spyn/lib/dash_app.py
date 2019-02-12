@@ -45,7 +45,7 @@ from pynq import Xlnk
 from flask import send_from_directory
 
 overlay = Overlay(
-    "/opt/python3.6/lib/python3.6/site-packages/spyn/overlays/spyn/spyn.bit")
+    "/usr/local/lib/python3.6/dist-packages/spyn/overlays/spyn.bit")
 overlay.download()
 
 motor = Motor_Controller()
