@@ -65,7 +65,7 @@ def copy_overlays():
 
 
 check_env()
-copy_overlays()
+# copy_overlays()
 #copy_notebooks()
 
 setup(
