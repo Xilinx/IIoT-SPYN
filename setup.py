@@ -69,6 +69,7 @@ def copy_overlays():
 
 check_env()
 copy_notebooks()
+copy_overlays()
 
 setup(
     name="spyn",
