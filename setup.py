@@ -56,17 +56,17 @@ def copy_overlays():
 
 
 # copy notebooks to jupyter home
-def copy_notebooks():
-    src_nb_dir = os.path.join(repo_board_folder, 'notebooks')
-    dst_nb_dir = os.path.join(board_notebooks_dir, 'spyn')
-    if os.path.exists(dst_nb_dir):
-        shutil.rmtree(dst_nb_dir)
-    copy_tree(src_nb_dir, dst_nb_dir)
+#def copy_notebooks():
+#    src_nb_dir = os.path.join(repo_board_folder, 'notebooks')
+#    dst_nb_dir = os.path.join(board_notebooks_dir, 'spyn')
+#    if os.path.exists(dst_nb_dir):
+#        shutil.rmtree(dst_nb_dir)
+#    copy_tree(src_nb_dir, dst_nb_dir)
 
 
 check_env()
 copy_overlays()
-copy_notebooks()
+#copy_notebooks()
 
 setup(
     name="spyn",
