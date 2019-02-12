@@ -40,6 +40,7 @@ __email__ = "kvt@xilinx.com, npurusho@xilinx.com"
 board = os.environ['BOARD']
 repo_board_folder = f'boards/{board}/'
 board_notebooks_dir = os.environ['PYNQ_JUPYTER_NOTEBOOKS']
+overlay_dir = f'/usr/local/lib/python3.6/dist-packages/spyn/overlays'
 hw_data_files = []
 
 
@@ -58,7 +59,13 @@ def copy_notebooks():
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     copy_tree(src_nb_dir, dst_nb_dir)
-
+    
+# copy overlays to python package
+def copy_overlays():
+    src_ol_dir = os.path.join(repo_board_folder, '')
+    dst_ol_dir = os.path.join(overlay_dir, '')
+    copy_tree(src_ol_dir, dst_ol_dir)
+    hw_data_files.extend([os.path.join("..", dst_ol_dir, f) for f in os.listdir(dst_ol_dir)])
 
 check_env()
 copy_notebooks()
