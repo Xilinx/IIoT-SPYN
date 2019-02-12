@@ -68,16 +68,17 @@ check_env()
 copy_overlays()
 copy_notebooks()
 
-setup(name='spyn',
-      version='1.0',
-      description='Motor Control using PYNQ package',
-      author='Xilinx ISM + PYNQ',
-      author_email='kvt@xilinx.com',
-      url='https://github.com/Xilinx/IIoT-SPYN',
-      packages=find_packages(),
-      download_url='https://github.com/Xilinx/IIoT-SPYN',
-      package_data={
-          '': ['*.bin', '*.so'],
-      },
-      data_files=data_files
-      )
+setup(
+    name="spyn",
+    version='1.0',
+    install_requires=['pynq>=2.3'],
+    url='https://github.com/npurusho/IIoT-SPYN.git',
+    license='BSD 3-Clause License',
+    author="Naveen Purushotham",
+    author_email="npurusho@xilinx.com",
+    packages=find_packages(),
+    package_data={
+        '': hw_data_files,
+    },
+    description="PYNQ example designs supporting PYNQ-enabled boards"
+)
