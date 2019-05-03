@@ -1,8 +1,8 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2017.1 (lin64) Build 1846317 Fri Apr 14 18:54:47 MDT 2017
---Date        : Mon May  7 15:32:46 2018
---Host        : xsjpssa108 running 64-bit Red Hat Enterprise Linux Workstation release 6.8 (Santiago)
+--Tool Version: Vivado v.2017.1_sdx (win64) Build 1915620 Thu Jun 22 17:54:58 MDT 2017
+--Date        : Fri Apr 26 13:54:16 2019
+--Host        : TUEIEAL-TS09 running 64-bit major release  (build 9200)
 --Command     : generate_target zsys_wrapper.bd
 --Design      : zsys_wrapper
 --Purpose     : IP block netlist
@@ -14,9 +14,6 @@ use UNISIM.VCOMPONENTS.ALL;
 entity zsys_wrapper is
   port (
     BTN0 : in STD_LOGIC;
-    BTN1 : in STD_LOGIC;
-    BTN2 : in STD_LOGIC;
-    BTN3 : in STD_LOGIC;
     DDR_addr : inout STD_LOGIC_VECTOR ( 14 downto 0 );
     DDR_ba : inout STD_LOGIC_VECTOR ( 2 downto 0 );
     DDR_cas_n : inout STD_LOGIC;
@@ -79,9 +76,6 @@ architecture STRUCTURE of zsys_wrapper is
     FIXED_IO_ps_porb : inout STD_LOGIC;
     ENC_A : in STD_LOGIC;
     BTN0 : in STD_LOGIC;
-    BTN1 : in STD_LOGIC;
-    BTN2 : in STD_LOGIC;
-    BTN3 : in STD_LOGIC;
     ENC_B : in STD_LOGIC;
     ENC_I : in STD_LOGIC;
     SDI1 : in STD_LOGIC;
@@ -99,9 +93,6 @@ begin
 zsys_i: component zsys
      port map (
       BTN0 => BTN0,
-      BTN1 => BTN1,
-      BTN2 => BTN2,
-      BTN3 => BTN3,
       DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
       DDR_ba(2 downto 0) => DDR_ba(2 downto 0),
       DDR_cas_n => DDR_cas_n,
