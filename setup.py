@@ -74,7 +74,7 @@ copy_overlays()
 setup(
     name="spyn",
     version='1.1',
-    install_requires=['pynq>=2.3'],
+    install_requires=['pynq>=2.1'],
     url='https://github.com/npurusho/IIoT-SPYN.git',
     license='BSD 3-Clause License',
     author='Xilinx ISM + PYNQ',
