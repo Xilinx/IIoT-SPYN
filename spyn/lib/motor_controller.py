@@ -58,31 +58,33 @@ class Motor_Controller(object):  # TODO comments
         self.mmio_capture = MMIO(CAPTURE_BLOCK_OFFSET, ADDRESS_RANGE)
         self.mmio_blocks = {'control_axi_block': hex(CONTROL_BLOCK_OFFSET),
                             'capture_axi_block': hex(CAPTURE_BLOCK_OFFSET)}
-        self.motor_modes = ('reset_mode', 'torque_mode', 'rpm_mode')
-        self.motor_capture_modes = ('ia_ib_angle_rpm', 'id_iq', 'vd_vq')
+        self.motor_modes = ('reset_mode', 'torque_mode', 'rpm_mode', 'init_mode')
+        self.motor_capture_modes = ('ia_ib_rpm_angle', 'id_iq_rpm_angle', 'vd_vq_angle')
 
     def set_mode(self, mode='reset_mode'):
         reg_list = [CONTROL, FLUX_SP, FLUX_KP, FLUX_KI, TORQUE_SP, TORQUE_KP,
-                    TORQUE_KI, RPM_SP, RPM_KP, RPM_KI, SHIFT, VD, VQ, FA, FB,
-                    CONTROL_REG2]
+                    TORQUE_KI, RPM_SP, RPM_KP, RPM_KI, SHIFT, VD, VQ]
+                    # DECIMATION, CAP_TRIGGER, CONTROL_REG2]
         for reg in reg_list:
             if mode == 'torque_mode':
                 self.mmio_control.write(reg.offset, reg.torque_mode)
             elif mode == 'rpm_mode':
                 self.mmio_control.write(reg.offset, reg.rpm_mode)
+            elif mode == 'init_mode':
+                self.mmio_control.write(reg.offset, reg.init_mode)
             else:
                 self.mmio_control.write(reg.offset, reg.reset_mode)
 
-    def capture_mode(self, mode='ia_ib_angle_rpm'):
+    def capture_mode(self, mode='ia_ib_rpm_angle'):
         reg = CONTROL_REG2
-        if mode == 'ia_ib_angle_rpm':
-            self.mmio_control.write(reg.offset, CAPTURE_IA_IB_ANGLE_RPM)
-        elif mode == 'id_iq':
-            self.mmio_control.write(reg.offset, CAPTURE_ID_IQ)
-        elif mode == 'vd_vq':
-            self.mmio_control.write(reg.offset, CAPTURE_VD_VQ)
+        if mode == 'ia_ib_rpm_angle':
+            self.mmio_control.write(reg.offset, CAPTURE_IA_IB_RPM_ANGLE)
+        elif mode == 'id_iq_rpm_angle':
+            self.mmio_control.write(reg.offset, CAPTURE_ID_IQ_RPM_ANGLE)
+        elif mode == 'vd_vq_angle':
+            self.mmio_control.write(reg.offset, CAPTURE_VD_VQ_ANGLE)
         else:
-            self.mmio_control.write(reg.offset, CAPTURE_IA_IB_ANGLE_RPM)
+            self.mmio_control.write(reg.offset, CAPTURE_IA_IB_RPM_ANGLE)
 
     def set_rpm(self, value):
         self.mmio_control.write(RPM_SP.offset, value)
@@ -93,8 +95,8 @@ class Motor_Controller(object):  # TODO comments
     def stop(self):
         self.mmio_control.write(CONTROL.offset, CONTROL.reset_mode)
 
-    def _read_controlreg(self, value):
-        result = self.mmio_control.read(value)
+    def _read_controlreg(self, offset):
+        result = self.mmio_control.read(offset)
         return result
 
     def _write_controlreg(self, offset, value):

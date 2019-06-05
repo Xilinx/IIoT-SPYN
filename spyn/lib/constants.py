@@ -35,58 +35,58 @@ __email__ = "npurusho@xilinx.com, kvt@xilinx.com"
 
 # Offsets and mode constants for AXI 32 control registers - axi_reg32_0
 AXI_CONTROL = collections.namedtuple('AXI_CONTROL',
-                                     'offset reset_mode rpm_mode torque_mode')
+                                     'offset reset_mode rpm_mode torque_mode init_mode')
 
-# reset_mode, rpm_mode and torque_mode are the available motor controller modes
+# reset_mode, init_mode, rpm_mode and torque_mode are the available motor controller modes
 # They contain the respective initializations
 # WR0_OFFSET
-CONTROL = AXI_CONTROL(offset=64, reset_mode=0x0, rpm_mode=0x141,
-                      torque_mode=0x145)
+CONTROL = AXI_CONTROL(offset=64, reset_mode=0x140, rpm_mode=0x141,
+                      torque_mode=0x145, init_mode=0xc86)
 # WR1_OFFSET
 FLUX_SP = AXI_CONTROL(offset=68, reset_mode=0x0, rpm_mode=0x0,
-                      torque_mode=0x0)
+                      torque_mode=0x0, init_mode=0x0)
 # WR2_OFFSET
 FLUX_KP = AXI_CONTROL(offset=72, reset_mode=0xFFFFF000, rpm_mode=0xFFFFF000,
-                      torque_mode=0xFFFFF000)
+                      torque_mode=0xFFFFF000, init_mode=0xFFFFF000)
 # WR3_OFFSET
 FLUX_KI = AXI_CONTROL(offset=76, reset_mode=0x0, rpm_mode=0x0,
-                      torque_mode=0x0)
+                      torque_mode=0x0, init_mode=0x0)
 # WR4_OFFSET
 TORQUE_SP = AXI_CONTROL(offset=80, reset_mode=0x0, rpm_mode=0x0,
-                        torque_mode=0x0)
+                        torque_mode=0x0, init_mode=0x0)
 # WR5_OFFSET
 TORQUE_KP = AXI_CONTROL(offset=84, reset_mode=0x1388, rpm_mode=0x1388,
-                        torque_mode=0xFFFFB1E0)
+                        torque_mode=0xFFFFB1E0, init_mode=0x1388)
 # WR6_OFFSET
 TORQUE_KI = AXI_CONTROL(offset=88, reset_mode=0x0, rpm_mode=0x0,
-                        torque_mode=0xFFFFEC78)
+                        torque_mode=0xFFFFEC78, init_mode=0x0)
 # WR7_OFFSET
 RPM_SP = AXI_CONTROL(offset=92, reset_mode=0x0, rpm_mode=0x0,
-                     torque_mode=0x64)
+                     torque_mode=0x64, init_mode=0x0)
 # WR8_OFFSET
 RPM_KP = AXI_CONTROL(offset=96, reset_mode=0xFFFFFF38, rpm_mode=0xFFFFFF38,
-                     torque_mode=0xFFFFFF38)
+                     torque_mode=0xFFFFFF38, init_mode=0xFFFFFF38)
 # WR9_OFFSET
 RPM_KI = AXI_CONTROL(offset=100, reset_mode=0xFFFFFFFB, rpm_mode=0xFFFFFFFB,
-                     torque_mode=0xFFFFFFFB)
+                     torque_mode=0xFFFFFFFB, init_mode=0xFFFFFFFB)
 # WR10_OFFSET
-SHIFT = AXI_CONTROL(offset=104, reset_mode=0x357, rpm_mode=0x357,
-                    torque_mode=0x164)
+SHIFT = AXI_CONTROL(offset=104, reset_mode=0x0, rpm_mode=0x0,
+                    torque_mode=0x0, init_mode=0x0)
 # WR11_OFFSET
 VD = AXI_CONTROL(offset=108, reset_mode=0xFFFFE300, rpm_mode=0xFFFFE300,
-                 torque_mode=0xFFFFE300)
+                 torque_mode=0xFFFFE300, init_mode=0xFFFFE300)
 # WR12_OFFSET
 VQ = AXI_CONTROL(offset=112, reset_mode=0xFFFFC100, rpm_mode=0xFFFFC100,
-                 torque_mode=0xFFFFC100)
+                 torque_mode=0xFFFFC100, init_mode=0xFFFFC100)
 # WR13_OFFSET
-FA = AXI_CONTROL(offset=116, reset_mode=0, rpm_mode=0,
-                 torque_mode=18120)
+DECIMATION = AXI_CONTROL(offset=116, reset_mode=0, rpm_mode=0,
+                         torque_mode=0, init_mode=0)
 # WR14_OFFSET
-FB = AXI_CONTROL(offset=120, reset_mode=0, rpm_mode=0,
-                 torque_mode=14647)
+CAP_TRIGGER = AXI_CONTROL(offset=120, reset_mode=0, rpm_mode=0,
+                          torque_mode= 0, init_mode= 0)
 # WR15_OFFSET
-CONTROL_REG2 = AXI_CONTROL(offset=124, reset_mode=0x0, rpm_mode=0x2,
-                           torque_mode=0x100000)
+CONTROL_REG2 = AXI_CONTROL(offset=124, reset_mode=0x0, rpm_mode=0x0,
+                           torque_mode=0x0, init_mode=0x0)
 
 # Offsets and mode constants for AXI 32 Status registers - axi_reg32_0
 AXI_STATUS = collections.namedtuple('AXI_status', 'offset')
@@ -107,6 +107,6 @@ CAPTURE_BLOCK_OFFSET = 0x43C10000
 ADDRESS_RANGE = 65536  # 64K
 
 # Capture modes for stream capture
-CAPTURE_IA_IB_ANGLE_RPM = 0x0
-CAPTURE_ID_IQ = 0x2
-CAPTURE_VD_VQ = 0x6
+CAPTURE_IA_IB_RPM_ANGLE = 0x0
+CAPTURE_ID_IQ_RPM_ANGLE = 0x2
+CAPTURE_VD_VQ_ANGLE =     0x3
