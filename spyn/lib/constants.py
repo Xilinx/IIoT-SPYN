@@ -82,7 +82,7 @@ VQ = AXI_CONTROL(offset=112, reset_mode=0xFFFFC100, rpm_mode=0xFFFFC100,
 DECIMATION = AXI_CONTROL(offset=116, reset_mode=0, rpm_mode=0,
                          torque_mode=0, init_mode=0)
 # WR14_OFFSET
-CAP_TRIGGER = AXI_CONTROL(offset=120, reset_mode=0, rpm_mode=0,
+CONTROL_MPC = AXI_CONTROL(offset=120, reset_mode= 0, rpm_mode= 0,
                           torque_mode= 0, init_mode= 0)
 # WR15_OFFSET
 CONTROL_REG2 = AXI_CONTROL(offset=124, reset_mode=0x0, rpm_mode=0x0,
@@ -105,8 +105,3 @@ CAPTURE_BLOCK_OFFSET = 0x43C10000
 
 # Address range for AXI control and capture blocks
 ADDRESS_RANGE = 65536  # 64K
-
-# Capture modes for stream capture
-CAPTURE_IA_IB_RPM_ANGLE = 0x0
-CAPTURE_ID_IQ_RPM_ANGLE = 0x2
-CAPTURE_VD_VQ_ANGLE =     0x3

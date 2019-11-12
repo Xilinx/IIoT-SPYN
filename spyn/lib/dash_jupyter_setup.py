@@ -51,7 +51,7 @@ def show_app(app,  # type: dash.Dash
     :param offline:
     :return:
     """
-    url = 'http://192.168.2.99:%d' % port
+    url = 'http://10.152.83.174:%d' % port
     iframe = '<iframe src="{url}" width={width} height={height}></iframe>' \
              ''.format(
         url=url,
@@ -82,5 +82,5 @@ def show_app(app,  # type: dash.Dash
 
     return app.run_server(debug=False,  # needs to be false in Jupyter
                           port=port,
-                          host="0.0.0.0",
+                          host="10.152.83.174",
                           **dash_flask_kwargs)

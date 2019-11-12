@@ -1,4 +1,4 @@
-#   Copyright (c) 2018, Xilinx, Inc.
+	#   Copyright (c) 2018, Xilinx, Inc.
 #   All rights reserved.
 # 
 #   Redistribution and use in source and binary forms, with or without 
@@ -63,8 +63,9 @@ class Motor_Controller(object):  # TODO comments
 
     def set_mode(self, mode='reset_mode'):
         reg_list = [CONTROL, FLUX_SP, FLUX_KP, FLUX_KI, TORQUE_SP, TORQUE_KP,
-                    TORQUE_KI, RPM_SP, RPM_KP, RPM_KI, SHIFT, VD, VQ]
-                    # DECIMATION, CAP_TRIGGER, CONTROL_REG2]
+                    TORQUE_KI, RPM_SP, RPM_KP, RPM_KI, VD, VQ]
+                    # SHIFT, DECIMATION, CONTROL_MPC, CONTROL_REG2]
+                    # the commented out registers above won't be changed when the mode is set 
         for reg in reg_list:
             if mode == 'torque_mode':
                 self.mmio_control.write(reg.offset, reg.torque_mode)
@@ -74,17 +75,6 @@ class Motor_Controller(object):  # TODO comments
                 self.mmio_control.write(reg.offset, reg.init_mode)
             else:
                 self.mmio_control.write(reg.offset, reg.reset_mode)
-
-    def capture_mode(self, mode='ia_ib_rpm_angle'):
-        reg = CONTROL_REG2
-        if mode == 'ia_ib_rpm_angle':
-            self.mmio_control.write(reg.offset, CAPTURE_IA_IB_RPM_ANGLE)
-        elif mode == 'id_iq_rpm_angle':
-            self.mmio_control.write(reg.offset, CAPTURE_ID_IQ_RPM_ANGLE)
-        elif mode == 'vd_vq_angle':
-            self.mmio_control.write(reg.offset, CAPTURE_VD_VQ_ANGLE)
-        else:
-            self.mmio_control.write(reg.offset, CAPTURE_IA_IB_RPM_ANGLE)
 
     def set_rpm(self, value):
         self.mmio_control.write(RPM_SP.offset, value)

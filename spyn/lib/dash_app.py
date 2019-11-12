@@ -43,6 +43,7 @@ import numpy as np
 from spyn.lib import *
 from pynq import Xlnk
 from flask import send_from_directory
+from dash.dependencies import Input, Output, State
 
 overlay = Overlay(
     "/usr/local/lib/python3.6/dist-packages/spyn/overlays/spyn.bit")
@@ -85,17 +86,32 @@ app.layout = html.Div(
                     dcc.Dropdown(
                         id='modes-dropdown',
                         options=[
-                            {'label': 'Current', 'value': 'Current'},
-                            {'label': 'Speed', 'value': 'Speed'}
+                            {'label': 'Speed', 'value': 'Speed'},
+                            {'label': 'Current', 'value': 'Current'}
                         ],
-                        value='Current')],
+                        value='Speed'),
+                    dcc.Markdown(children='### `Set Decimation`'),
+                    dcc.Dropdown(
+                        id='decimate-dropdown',
+                        options=[
+                            {'label': 'no decimation', 'value': '0'},
+                            {'label': '1', 'value': '1'},
+                            {'label': '2', 'value': '2'},
+                            {'label': '3', 'value': '3'},
+                            {'label': '4', 'value': '4'},
+                            {'label': '6', 'value': '6'},
+                            {'label': '8', 'value': '8'},
+                            {'label': '10', 'value': '10'},
+                            {'label': '12', 'value': '12'},
+                        ],
+                        value='0')],
                     style={'padding': '0px 0px 0px 0px',
                            'text-align': 'left'}),
                 html.Div(
                     style={},
                     children=[
                         dcc.Markdown(children='### `Motor ON/OFF`'),
-                        html.Button('ON/OFF', id='button'),
+                        html.Button('ON/OFF', id='button' , disabled = True),
                         html.Div(id='output-text1', children='')]),
                 html.Div(children=[
                     dcc.Markdown(children='### `RPM Slider`'),
@@ -105,6 +121,7 @@ app.layout = html.Div(
                             min=-5000,
                             max=5000,
                             value=0,
+                            step=10,
                             marks={0: '0',
                                    5000: '5000',
                                    -5000: '-5000'})],
@@ -134,7 +151,7 @@ app.layout = html.Div(
                     options=[
                         {'label': 'Ia Current', 'value': 'Ia Current'},
                         {'label': 'Ib Current', 'value': 'Ib Current'},
-                        {'label': 'Angle', 'value': 'SF'},
+                        {'label': 'Angle', 'value': 'Angle'},
                         {'label': 'RPM', 'value': 'RPM'}
                     ],
                     value='Ia Current',
@@ -145,47 +162,61 @@ app.layout = html.Div(
                    'text-align': 'left',
                    "width": "750px"})])
 
-random_x = range(0, 32000, 1)
+random_x = range(0, 4096, 1)
 random_x = list(random_x)
 
 
+
 @app.callback(
-    dash.dependencies.Output('output-text1', 'children'),
-    [dash.dependencies.Input('button', 'n_clicks'),
-     dash.dependencies.Input('modes-dropdown', 'value')])
-def motor_button(n_clicks, value):
-    if n_clicks % 2 == 0:
+    Output('output-text1', 'children'),
+    [Input('button', 'n_clicks'),
+     Input('modes-dropdown', 'value')],
+    [State('rpm-slider', 'value'),
+     State('rpm-slider', 'value')])
+def motor_button(n_clicks, mode_val, rpm_val, torq_val):
+    if int(n_clicks or 0) == 0:
+        motor.set_mode('init_mode')
+        time.sleep(4)
+        motor.set_mode('reset_mode')
+        return 'The Motor is Initialized'
+    if int(n_clicks or 0) % 2 == 0:
         motor.set_mode('reset_mode')
         return 'The Motor is OFF'
     else:
-        if str(value) == 'Speed':
+        if str(mode_val) == 'Speed':
             motor.set_mode('rpm_mode')
-            motor.set_rpm(0)
+            motor.set_rpm(int(rpm_val))
         else:
             motor.set_mode('torque_mode')
+            motor.set_torque(int(torq_val))
         return 'The Motor is ON'
 
+@app.callback(Output('button', 'disabled'), [Input('button', 'n_clicks')])     
+def set_button_enabled_state(n_clicks):
+    time.sleep(4)
+    return False
 
 @app.callback(
-    dash.dependencies.Output('output-text2', 'children'),
-    [dash.dependencies.Input('rpm-slider', 'value')])
+    Output('output-text2', 'children'),
+    [Input('rpm-slider', 'value')])
 def update_rpm(sliderValue):
     motor.set_rpm(sliderValue)
     return f'The Motor is set to {sliderValue} RPM'
 
 
 @app.callback(
-    dash.dependencies.Output('output-text3', 'children'),
-    [dash.dependencies.Input('torque-slider', 'value')])
+    Output('output-text3', 'children'),
+    [Input('torque-slider', 'value')])
 def update_torque(tsliderValue):
     motor.set_torque(tsliderValue)
     return f'The Motor is set to {tsliderValue} Torque'
 
 
 @app.callback(
-    dash.dependencies.Output('graphs', 'children'),
-    [dash.dependencies.Input('graphs-radio', 'value')])
-def update_graphs(tsliderValue):
+    Output('graphs', 'children'),
+    [Input('graphs-radio', 'value'),
+     Input('decimate-dropdown','value')])
+def update_graphs(tsliderValue, decimation):
     graphs = []
     motor.capture_mode('ia_ib_angle_rpm')
 
@@ -193,7 +224,9 @@ def update_graphs(tsliderValue):
     input_buffer = xlnk.cma_array(shape=(256,), dtype=np.uint8)
 
     capture_address = input_buffer.physical_address
-    capture_count = 1000
+    capture_count = 128
+    motor._write_controlreg(DECIMATION.offset, int(decimation))
+    motor.write_capturereg(0, 2) # make capture unit ready
 
     def continuous_capture(capture_count):
         mmio_stream = MMIO(capture_address, 256)
@@ -213,10 +246,12 @@ def update_graphs(tsliderValue):
 
     cap_list = continuous_capture(capture_count)
     Ia, Ib, angle, rpm = cap_list[0], cap_list[1], cap_list[3], cap_list[2]
-
-    current_Ia = np.array(Ia) * 0.00039
-    current_Ib = np.array(Ib) * 0.00039
-
+    
+    current_Ia = (np.array(Ia)) * 0.00039
+    current_Ib = (np.array(Ib)) * 0.00039
+    
+    motor.write_capturereg(0,0) #reset the capture unit
+    
     data = {'Ia': current_Ia,
             'Ib': current_Ib,
             'angle': cap_list[3],
@@ -245,16 +280,17 @@ def update_graphs(tsliderValue):
                         'size': 15,
                         'line': {'width': 0.5, 'color': 'white'}
                     },
-                ) for i in df.items()
+                ) #for i in df.items()
             ],
-            'layout': go.Layout(
-                xaxis={'title': 'Sample'},
-                yaxis={'title': str(tsliderValue)},
-                margin={'l': 80, 'b': 40, 't': 10, 'r': 10},
-                hovermode='closest'
-            )
+            'layout':{
+                'xaxis':{'title': 'Sample'},
+                'yaxis':{'title': str(tsliderValue)},
+                'margin':{'l': 80, 'b': 40, 't': 10, 'r': 10},
+                'hovermode':'closest'}
         }
     ))
+    
+    #if False:
     graphs.append((html.Div([dcc.Markdown(children='### `Plot-2 Ia vs Ib`')],
                             style={'padding': '3px 3px 3px 3px'})))
     graphs.append(dcc.Graph(
@@ -262,21 +298,20 @@ def update_graphs(tsliderValue):
         figure={
             'data': [
                 go.Scattergl(
-                    x=df['Ia'],
-                    y=df['Ib'],
+                    x = df.Ia,
+                    y = df.Ib,
                     mode='markers',
                     opacity=0.7,
                     marker=dict(color='#F0598E', line=dict(width=1)),
-                    name=i
-                ) for i in df.items()
+                    name = 'current'
+                )#for i in df.items()
             ],
-            'layout': go.Layout(
-                xaxis={'title': 'Current Ia'},
-                yaxis={'title': 'Current Ib'},
-                margin={'l': 80, 'b': 40, 't': 10, 'r': 10},
-                legend={'x': 0, 'y': 1},
-                hovermode='closest'
-            )
+                'layout': { 
+                    'xaxis' : {'title': 'Current Ia'},
+                    'yaxis' : {'title': 'Current Ib'},
+                    'margin': {'l': 80, 'b': 40, 't': 10, 'r': 10},
+                    'hovermode': 'closest'}
         }
-    ), )
+    ))
+    
     return graphs
