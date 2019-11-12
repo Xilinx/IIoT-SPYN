@@ -1,4 +1,4 @@
-# IIoT-SPYN
+# IIoT-SPYNX with MPC
 
 [**IIoT-EDDP**](https://github.com/Xilinx/IIoT-EDDP): Industrial IoT Electric Drive Demonstration Platform is an open-source project that provides all necessary software and hardware components for development and evaluation of motor control applications. 
 
