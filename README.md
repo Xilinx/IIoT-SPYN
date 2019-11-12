@@ -8,6 +8,7 @@
 
 IIoT-SPYN is intended to work with the EDDP kit. Here is the link to purchase the kit: [EDDP Kit](https://shop.trenz-electronic.de/en/TEC0053-04-K1-EDDP-Motor-Control-Kit-with-Motor-Power-Supplies?c=476)
 
+After the FOC was running use the switch SW0 to activate the MPC.
 
 
 ## Quick Start for Arty-Z7-10
