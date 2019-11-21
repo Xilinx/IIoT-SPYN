@@ -59,7 +59,7 @@ class Motor_Controller(object):  # TODO comments
         self.mmio_blocks = {'control_axi_block': hex(CONTROL_BLOCK_OFFSET),
                             'capture_axi_block': hex(CAPTURE_BLOCK_OFFSET)}
         self.motor_modes = ('reset_mode', 'torque_mode', 'rpm_mode', 'init_mode')
-        self.motor_capture_modes = ('ia_ib_rpm_angle', 'id_iq_rpm_angle', 'vd_vq_angle')
+        self.motor_capture_modes = ('ia_ib_rpm_angle_filtered', 'ia_ib_rpm_angle_raw', 'ialpha_ibeta_rpm_angle',  'id_iq_rpm_angle', 'vd_vq_angle', 'valpha_vbeta_angle', 'va_vb_vc', 'va_vb_vc_PWM')
 
     def set_mode(self, mode='reset_mode'):
         reg_list = [CONTROL, FLUX_SP, FLUX_KP, FLUX_KI, TORQUE_SP, TORQUE_KP,
